@@ -1,6 +1,11 @@
+//configures enviorment variables
 require('dotenv').config()
-console.log(process.env) 
+// console.log(process.env) 
 
+//configure the domain / DNS
+
+
+// mail gun stuff
 const API_KEY = process.env.API_KEY;
 const DOMAIN = '@hackclub.com';
 
@@ -25,7 +30,7 @@ client.messages.create(DOMAIN, messageData)
    console.error(err);
  });
 
-
+//hack club bank API STUFF
 var axios = require("axios").default;
 
 var options = {
