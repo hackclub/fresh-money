@@ -1,7 +1,7 @@
 require('dotenv').config()
 console.log(process.env) 
 
-const API_KEY = 'API_KEY';
+const API_KEY = 'process.env.API_KEY';
 const DOMAIN = '@hackclub.com';
 
 const formData = require('form-data');
