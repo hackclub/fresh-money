@@ -3,7 +3,7 @@ require('dotenv').config()
 // console.log(process.env) 
 
 //configure the domain / DNS
-
+// figure out the trascation ID value endpoint ASK CALEB!!!!!!
 
 // mail gun stuff
 const API_KEY = process.env.API_KEY;
