@@ -1,4 +1,7 @@
-const API_KEY = 'pubkey-72e3c478701ec798d8b51297766c5021';
+require('dotenv').config()
+console.log(process.env) 
+
+const API_KEY = 'API_KEY';
 const DOMAIN = '@hackclub.com';
 
 const formData = require('form-data');
