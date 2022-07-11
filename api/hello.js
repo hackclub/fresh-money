@@ -44,8 +44,10 @@ axios.request(options).then(function (response) {
 }).catch(function (error) {
   console.error(error);
 });
-export default function handler(request, response) {
+module.exports = {
+  handler: (request, response) => {
     const { name } = request.query;
     response.status(200).send(`Hello ${name}!`);
+  }
   }
 
