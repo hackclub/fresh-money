@@ -9,45 +9,55 @@ require('dotenv').config()
 const API_KEY = process.env.API_KEY;
 const DOMAIN = '@hackclub.com';
 
-const formData = require('form-data');
-const Mailgun = require('mailgun.js');
+const mailgun = require("mailgun-js");
+const mg = mailgun({apiKey: API_KEY, domain: DOMAIN});
+const data = {
+	from: 'Excited User <abby@hackclub.com>',
+	to: 'abby@hackclub.com',
+	subject: 'Hello',
+	text: 'Testing some Mailgun awesomness!'
+};
 
-const mailgun = new Mailgun(formData);
-const client = mailgun.client({username: 'api', key: API_KEY});
 
 const messageData = {
   from: 'Abby Fischler <abby@hackclub.com>',
-  to: 'abby@hackclub.com',
+  to: 'abigail.fischler@gmail.com',
   subject: 'Donation@',
   text: 'Hack Club has recived a donation!'
 };
 
-client.messages.create(DOMAIN, messageData)
- .then((res) => {
-   console.log(res);
- })
- .catch((err) => {
-   console.error(err);
- });
+
+export default function handler(request, response) {
+  const { name } = request.query;
+ mg.messages().send(data, function (error, body) {
+	console.log(error, body);
+  response.status(200).send(`Hello ${body}!`);
+}
+
+)
+
+console.log("HIII THIS CODE HAS RUN!");
+}
+
 
 //hack club bank API STUFF
-var axios = require("axios").default;
+// var axios = require("axios").default;
 
-var options = {
-  method: 'GET',
-  url: 'https://bank.hackclub.com/api/v3/donations/donation_id',
-  headers: {'Content-Type': 'application/json'}
-};
+// var options = {
+//   method: 'GET',
+//   url: 'https://bank.hackclub.com/api/v3/donations/donation_id',
+//   headers: {'Content-Type': 'application/json'}
+// };
 
-axios.request(options).then(function (response) {
-  console.log(response.data);
-}).catch(function (error) {
-  console.error(error);
-});
-module.exports = {
-  handler: (request, response) => {
-    const { name } = request.query;
-    response.status(200).send(`Hello ${name}!`);
-  }
-  }
+// axios.request(options).then(function (response) {
+//   console.log(response.data);
+// }).catch(function (error) {
+//   console.error(error);
+// });
+// module.exports = {
+//   handler: (request, response) => {
+//     const { name } = request.query;
+//     response.status(200).send(`Hello ${name}!`);
+//   }
+//   }
 
