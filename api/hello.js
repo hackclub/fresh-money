@@ -2,7 +2,25 @@
 require('dotenv').config()
 // console.log(process.env) 
 
-//configure the domain / DNS
+// STEP 1:
+
+
+
+// if there is a new transcation at bank TRIGGER
+// if new transcation run, if not nothing chill
+
+// node api hello.js
+// node file that checks if new
+// use the api and index to the first array element 
+//output:
+// 1) if file doesn't exsist create it last transaction.txt
+// 2) compare transaction time (c) to file 
+// 3) compare c to 1 to the newest the Element]
+// 4) if its the same send an Email if its different don't 
+// 5) update file
+
+//Step 2:
+
 // figure out the trascation ID value endpoint ASK CALEB!!!!!!
 
 // mail gun stuff
