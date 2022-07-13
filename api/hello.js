@@ -7,14 +7,14 @@ require('dotenv').config()
 
 // mail gun stuff
 const API_KEY = process.env.API_KEY;
-const DOMAIN = '@hackclub.com';
+const DOMAIN = 'hackclub.com';
 
 const mailgun = require("mailgun-js");
 const mg = mailgun({apiKey: API_KEY, domain: DOMAIN});
 const data = {
-	from: 'Excited User <abby@hackclub.com>',
+	from: 'Abby Fischler (the money queen) <abby@hackclub.com>',
 	to: 'abby@hackclub.com',
-	subject: 'Hello',
+	subject: 'Fre$h moneyyy',
 	text: 'Testing some Mailgun awesomness!'
 };
 
