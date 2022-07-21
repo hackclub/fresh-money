@@ -1,9 +1,6 @@
 //configures enviorment variables
 require('dotenv').config()
 // console.log(process.env) 
-
-
-
 //ack club bank API STUFF
 var axios = require("axios").default;
 
@@ -15,7 +12,7 @@ var options = {
     }
 };
 
-
+/*
 // STEP 1:
 
 
@@ -36,7 +33,7 @@ var options = {
 //Step 2:
 
 // figure out the trascation ID value endpoint ASK CALEB!!!!!!
-
+*/
 // mail gun stuff
 const API_KEY = process.env.API_KEY;
 const DOMAIN = 'hackclub.com';
@@ -63,39 +60,28 @@ const messageData = {
 
 
 export default async function hello(req, res) {
-   
-    // mg.messages().send(data, function(error, body) {
-    //         console.log(error, body);
-    //         response.status(200).send(`Hello ${body}!`);
-    //     }
+   /*
+    mg.messages().send(data, function(error, body) {
+            console.log(error, body);
+            response.status(200).send(`Hello ${body}!`);
+        }
 
-    //)
+    )
+    */
     var data = await axios.request(options); 
     var txs = data.data;
     
-    data.forEach((tx) => {
-      console.log(tx);
-  });
-
-    //bank API output storing as data
-
+    //sorts transcations by date
+    var latest = txs.slice().sort((a, b) => new Date(b.date) - new Date(a.date))[0];
+    if (latest.date >= new Date()){
+      res.send({latest, mostMoney});
+    }
 
     console.log("HIII THIS CODE HAS RUN!");
-    res.send(data.data);
+    res.send({latest, mostMoney});
 }
 
-
- 
-
-// // goal: index through the first API array element
-
-// how do i link so it goes through the API index?
-// function first(arr) {
-//     if(!Array.isArray(arr)) return;
-//     return arr[0];
-//  }
-
-//  // 2 attempt
-//  File yourFile = new File("transaction.txt");
-// yourFile.createNewFile(); // if file already exists will do nothing 
-// FileOutputStream oFile = new FileOutputStream(yourFile, false); 
+/**
+ 1) compare last transaction date to last transaction that was made and cached
+ 2)if last transaction is greater than the last transacation cached SEND AN EMAIL
+  */
