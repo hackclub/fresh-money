@@ -8,7 +8,6 @@ lastRunTime = fs.readFileSync('lastrun.txt', 'utf8')
 
 //if it was run before the 24 hours
 //turn lastRunTime into a timestampe
-
   if (Date.parse(lastRunTime) <= Date.now() + (24*60*60)){
     console.log("I AM AN EMAIL FROM GMAIL");
     //send a new email
@@ -26,7 +25,7 @@ fs.writeFileSync('yo.txt', String(new Date()), function (err) {
 
 
 process.exit(0)
-// console.log(process.env) 
+
 //ack club bank API STUFF
 // var axios = require("axios").default;
 
@@ -115,7 +114,6 @@ process.exit(0)
 //    // res.send({latest, mostMoney});
 // }
 /* checks everyday if there are any transactions with the the date and if there were send a summary email*/
-
 
 
 /**
