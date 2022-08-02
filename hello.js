@@ -1,9 +1,10 @@
 //configures enviorment variables
 require('dotenv').config()
 
+
 console.log('script running...')
 fs = require('fs')
-lastRunTime = fs.readFileSync('yo.txt', 'utf8')
+lastRunTime = fs.readFileSync('/Users/abbyfischler/Developer/moneyFlow/yo.txt', 'utf8')
 
 
 //if it was run before the 24 hours
@@ -56,7 +57,7 @@ if (Date.parse(lastRunTime) <= Date.now() - 5000) {
 
   // console.log(data, txs);
 
-  fs.writeFileSync('yo.txt', String(new Date()), function (err) {
+  fs.writeFileSync('/Users/abbyfischler/Developer/moneyFlow/yo.txt', String(new Date()), function (err) {
     if (err) return console.log(err);
   });
 } else {
