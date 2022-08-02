@@ -1,30 +1,91 @@
 //configures enviorment variables
-// require('dotenv').config()
+require('dotenv').config()
 
 console.log('script running...')
 fs = require('fs')
-lastRunTime = fs.readFileSync('lastrun.txt', 'utf8')
+lastRunTime = fs.readFileSync('yo.txt', 'utf8')
 
 
 //if it was run before the 24 hours
 //turn lastRunTime into a timestampe
-  if (Date.parse(lastRunTime) <= Date.now() + (24*60*60)){
-    console.log("I AM AN EMAIL FROM GMAIL");
-    //send a new email
-    // update a text
-    
-  }
-else{
-    console.log("It has been less than a day")
+console.log(lastRunTime, Date.parse(lastRunTime), Date.now())
+if (Date.parse(lastRunTime) <= Date.now() - 5000) {
+
+  // grab transcation details
+  var axios = require("axios").default;
+
+  var options = {
+    method: 'GET',
+    url: 'https://bank.hackclub.com/api/v3/organizations/hq/donations',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  };
+
+  // ASYNC VS SYNC EXAMPLES
+  // // sync
+  // var data = asyncThing()
+  // console.log(data)
+  // // async
+  // asyncThing().then(data => {
+  //   console.log(data)
+  // })
+
+  axios.request(options).then(data => {
+    var txs = data.data;
+    // write some code...
+    var listOfTxs = txs
+    var sub = `fresh money: ${Date.now()}`
+    var txt = 'transaction number'
+    sendEmail('abby@hackclub.com', 'abby@hackclub.com', sub, txt)
+    sendEmail('max@hackclub.com', 'abby@hackclub.com', sub, txt)
+
+    // var latest = txs.slice().sort((a, b) => new Date(b.date) - new Date(a.date))[0];
+
+    // console.log(latest)
+    // if (latest.date >= lastRunTime){
+    //   //res.send({latest, mostMoney});
+    // }
+
+  })
+  // data isn't valid anymore
+
+
+  //var data = axios.request(options);
+  //var txs = data.data;
+
+  // console.log(data, txs);
+
+  fs.writeFileSync('yo.txt', String(new Date()), function (err) {
+    if (err) return console.log(err);
+  });
+} else {
+  console.log("It has been less than a day")
 }
 
-fs = require('fs');
-fs.writeFileSync('yo.txt', String(new Date()), function (err) {
-  if (err) return console.log(err);
-});
 
+function sendEmail(to, from, subject, text) {
+  const API_KEY = process.env.API_KEY;
+  const DOMAIN = 'hackclub.com';
 
-process.exit(0)
+  const mailgun = require("mailgun-js");
+  const mg = mailgun({
+    apiKey: API_KEY,
+    domain: DOMAIN
+  });
+  const data = {
+    from:from,
+    to: to,
+    subject: subject,
+    text: text
+  };
+
+  mg.messages().send(data, function (error, body) {
+    console.log(error, body);
+  })
+}
+
+// process.exit(0)
 
 //ack club bank API STUFF
 // var axios = require("axios").default;
@@ -100,15 +161,15 @@ process.exit(0)
 //     });
 
 
-    
-//     var data = await axios.request(options); 
-//     var txs = data.data;
-    
+
+// var data = await axios.request(options); 
+// var txs = data.data;
+
 //     //sorts transcations by date
-//     var latest = txs.slice().sort((a, b) => new Date(b.date) - new Date(a.date))[0];
-//     if (latest.date >= new Date()){
-//       //res.send({latest, mostMoney});
-//     }
+// var latest = txs.slice().sort((a, b) => new Date(b.date) - new Date(a.date))[0];
+// if (latest.date >= new Date()){
+//   //res.send({latest, mostMoney});
+// }
 
 //     console.log("HIII THIS CODE HAS RUN!");
 //    // res.send({latest, mostMoney});
