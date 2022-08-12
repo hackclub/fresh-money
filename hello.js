@@ -1,6 +1,6 @@
 //configures enviorment variables
 require('dotenv').config()
-
+process.env.API_KEY="f3316148fc3b000d263b8bd577f5071c-1b8ced53-10c7495b"
 
 console.log('script running...')
 fs = require('fs')
@@ -12,6 +12,8 @@ lastRunTime = fs.readFileSync('/Users/abbyfischler/Developer/moneyFlow/yo.txt', 
 console.log(lastRunTime, Date.parse(lastRunTime), Date.now())
 if (Date.parse(lastRunTime) <= Date.now() - 5000) {
 
+
+  
   // grab transcation details
   var axios = require("axios").default;
 
@@ -23,21 +25,20 @@ if (Date.parse(lastRunTime) <= Date.now() - 5000) {
     }
   };
 
-  // ASYNC VS SYNC EXAMPLES
-  // // sync
-  // var data = asyncThing()
-  // console.log(data)
-  // // async
-  // asyncThing().then(data => {
-  //   console.log(data)
-  // })
-
   axios.request(options).then(data => {
     var txs = data.data;
-    // write some code...
     var listOfTxs = txs
+
+    var cleanList = txs.map(transaction => {
+    //  lastRunTime = lastRunTime * 1000
+      console.log((new Date(lastRunTime).getTime() ), Date.parse(transaction.date), Date.parse(transaction.date) <= lastRunTime);
+      if (transaction.amount_cents >= 100*10){
+      return `Donor Name: ${transaction.donor.name}, Amount: $${transaction.amount_cents/100}, Date: ${transaction.date}`
+      }
+    });
+
     var sub = `fresh money: ${Date.now()}`
-    var txt = 'transaction number'
+    var txt = cleanList
     sendEmail('abby@hackclub.com', 'abby@hackclub.com', sub, txt)
     sendEmail('max@hackclub.com', 'abby@hackclub.com', sub, txt)
 
@@ -89,15 +90,8 @@ function sendEmail(to, from, subject, text) {
 // process.exit(0)
 
 //ack club bank API STUFF
-// var axios = require("axios").default;
 
-// var options = {
-//     method: 'GET',
-//     url: 'https://bank.hackclub.com/api/v3/organizations/hq/donations',
-//     headers: {
-//         'Content-Type': 'application/json'
-//     }
-// };
+
 
 // /*
 // // STEP 1:
