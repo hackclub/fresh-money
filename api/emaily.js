@@ -14,11 +14,10 @@ const mg = mailgun({
     domain: 'hackclub.com'
 });
 
-export default (res, req) => {
+export default (req, res) => {
     axios.request(options).then(data => {
         var txs = data.data;
         var txt = txs.map(transaction => {
-            console.log((new Date(lastRunTime).getTime()), Date.parse(transaction.date), Date.parse(transaction.date) <= lastRunTime);
             if (transaction.amount_cents >= 100 * 10) {
                 return `Donor Name: ${transaction.donor.name}, Amount: $${transaction.amount_cents/100}, Date: ${transaction.date}`
             }
@@ -26,9 +25,9 @@ export default (res, req) => {
 
         var sub = `fresh money: ${Date.now()}`
         sendEmail('abby@hackclub.com', 'abby@hackclub.com', sub, txt)
-        sendEmail('max@hackclub.com', 'abby@hackclub.com', sub, txt)
-
+       // sendEmail('max@hackclub.com', 'abby@hackclub.com', sub, txt)
     })
+    res.send("sent email")
 }
 
 function sendEmail(to, from, subject, text) {
