@@ -42,7 +42,7 @@ export default (req, res) => {
         sendEmail('abby@hackclub.com', 'abby@hackclub.com', `Fresh money: ${Date.now()}`, (emailMessage))
         sendEmail('christina@hackclub.com', 'abby@hackclub.com', `Fresh money: ${Date.now()}`, (emailMessage))
         sendEmail('max@hackclub.com', 'abby@hackclub.com', `Fresh money: ${Date.now()}`, (emailMessage))
-       
+        res.status(200).send("it sent!!!! WOOOHOOOO")
     })
 } else {
     res.status(400).send("nope didn't work")
