@@ -2,7 +2,7 @@ var fs = require('fs')
 var axios = require("axios").default;
 var options = {
     method: 'GET',
-    url: 'https://bank.hackclub.com/api/v3/organizations/hq/donations',
+    url: 'https://bank.hackclub.com/api/v3/organizations/hq/transactions',
     headers: {
         'Content-Type': 'application/json'
     }
@@ -15,19 +15,31 @@ const mg = mailgun({
 });
 
 export default (req, res) => {
+    if(req.query.date) {
     axios.request(options).then(data => {
         var txs = data.data;
-        var txt = txs.map(transaction => {
-            if (transaction.amount_cents >= 100 * 10) {
-                return `Donor Name: ${transaction.donor.name}, Amount: $${transaction.amount_cents/100}, Date: ${transaction.date}`
-            }
-        });
+        txs = txs.filter(tx => (
+            tx.date ===
+            (new Date(req.query.date)).toLocaleString('en-us', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+            }).replace(/(\d+)\/(\d+)\/(\d+)/, '$3-$1-$2').toString()
+        ));
+        // var txt = txs.map(transaction => {
+        //     if (transaction.amount_cents >= 100 * 10) {
+        //         return `Donor Name: ${transaction.donor.name}, Amount: $${transaction.amount_cents/100}, Date: ${transaction.date}`
+        //     }
+        // });
 
-        var sub = `fresh money: ${Date.now()}`
-        sendEmail('abby@hackclub.com', 'abby@hackclub.com', sub, txt)
-       // sendEmail('max@hackclub.com', 'abby@hackclub.com', sub, txt)
+        res.send(txs);
+        sendEmail('abby@hackclub.com', 'abby@hackclub.com', `fresh money: ${Date.now()}`, txs)
+        // sendEmail('max@hackclub.com', 'abby@hackclub.com', sub, txt)
     })
-    res.send("sent email")
+} else {
+    res.status(400).send("nope didn't work")
+}
+    // res.send("sent email")
 }
 
 function sendEmail(to, from, subject, text) {
@@ -38,7 +50,11 @@ function sendEmail(to, from, subject, text) {
         text: text
     };
 
-    mg.messages().send(data, function(error, body) {
+   
+
+    mg.messages().send(data, function (error, body) {
         console.log(error, body);
     })
+
+    console.log("sent!")
 }
