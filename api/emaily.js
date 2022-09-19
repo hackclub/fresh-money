@@ -1,4 +1,3 @@
-var fs = require('fs')
 var axios = require("axios").default;
 var options = {
     method: 'GET',
