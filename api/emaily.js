@@ -16,7 +16,7 @@ const mg = mailgun({
 
 export default (req, res) => {
     if(req.query.date) {
-    axios.request(options).then(data => {
+    axios.request(options).then(async data => {
         var txs = data.data;
         txs = txs.filter(tx => (
             tx.date ===
@@ -39,9 +39,9 @@ export default (req, res) => {
         // });
 
         var emailMessage = welcomeMessage + txs2;
-        sendEmail('abby@hackclub.com', 'abby@hackclub.com', `Fresh money: ${Date.now()}`, (emailMessage))
-        sendEmail('christina@hackclub.com', 'abby@hackclub.com', `Fresh money: ${Date.now()}`, (emailMessage))
-        sendEmail('max@hackclub.com', 'abby@hackclub.com', `Fresh money: ${Date.now()}`, (emailMessage))
+        await sendEmail('abby@hackclub.com', 'abby@hackclub.com', `Fresh money: ${Date.now()}`, (emailMessage))
+        await sendEmail('christina@hackclub.com', 'abby@hackclub.com', `Fresh money: ${Date.now()}`, (emailMessage))
+        await sendEmail('max@hackclub.com', 'abby@hackclub.com', `Fresh money: ${Date.now()}`, (emailMessage))
         res.status(200).send("it sent!!!! WOOOHOOOO")
     })
 } else {
@@ -59,10 +59,14 @@ function sendEmail(to, from, subject, text) {
     };
 
    
+    return new Promise((resolve, reject) => {
+        mg.messages().send(data, (error, body) => {
+            if (error) {
+                reject(error);
+            }
 
-    mg.messages().send(data, function (error, body) {
-        console.log(error, body);
+            console.log("sent!")
+            resolve(body);
+        });
     })
-
-    console.log("sent!")
 }
