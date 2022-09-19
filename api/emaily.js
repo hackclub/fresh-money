@@ -31,11 +31,6 @@ export default (req, res) => {
                 return `Transaction Name: ${transaction.memo}, Amount: $${transaction.amount_cents / 100}, Date: ${transaction.date}`
 
             }).join("\n")
-            // var txt = txs.map(transaction => {
-            //     if (transaction.amount_cents >= 100 * 10) {
-            //         return `Donor Name: ${transaction.donor.name}, Amount: $${transaction.amount_cents/100}, Date: ${transaction.date}`
-            //     }
-            // });
 
             var emailMessage = welcomeMessage + txs2;
             await sendEmail('abby@hackclub.com', 'abby@hackclub.com', `Fresh money: ${Date.now()}`, (emailMessage))
@@ -46,7 +41,6 @@ export default (req, res) => {
     } else {
         res.status(400).send("nope didn't work")
     }
-    // res.send("sent email")
 }
 
 function sendEmail(to, from, subject, text) {
