@@ -25,7 +25,7 @@ export default (req, res) => {
                     day: '2-digit'
                 }).replace(/(\d+)\/(\d+)\/(\d+)/, '$3-$1-$2').toString()
             ));
-            var welcomeMessage = `Hi Christina! Hack Club has a lot going on in the bank. Here is your daily update. XX, Abby! \n`
+            var welcomeMessage = `Hi Christina! Tis' the season; Hack Club has a lot fa la la laing around. Here is your update! \n`
             var txs2 = txs.map(transaction => {
 
                 return `Transaction Name: ${transaction.memo}, Amount: $${transaction.amount_cents / 100}, Date: ${transaction.date}`
