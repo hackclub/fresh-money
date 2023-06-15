@@ -21,9 +21,9 @@ export default (req, res) => {
         tx.date ===
         (new Date(req.query.date)).toLocaleString('en-us', {
           year: 'numeric',
-          month: '2-digit',
-          day: '2-digit'
-        }).replace(/(\d+)\/(\d+)\/(\d+)/, '$3-$1-$2').toString()
+          month: 'long',
+          day: 'numeric'
+        }).toString()
       ));
       var welcomeMessage = `Hi Christina! Here is your daily update! -Abby \n`
       var txs2 = txs.map(transaction => {
@@ -33,13 +33,13 @@ export default (req, res) => {
       var emailMessage = welcomeMessage + txs2;
       var currentDate = new Date().toLocaleDateString('en-us', {
         year: 'numeric',
-        month: '2-digit',
-        day: '2-digit'
-      }).replace(/(\d+)\/(\d+)\/(\d+)/, '$3-$1-$2').toString();
+        month: 'long',
+        day: 'numeric'
+      }).toString();
 
-      await sendEmail('abby@hackclub.com', 'abby@hackclub.com', `Fresh money: ${currentDate}`, emailMessage);
-      await sendEmail('christina@hackclub.com', 'abby@hackclub.com', `Fresh money: ${currentDate}`, emailMessage);
-      await sendEmail('max@hackclub.com', 'abby@hackclub.com', `Fresh money: ${currentDate}`, emailMessage);
+      await sendEmail('abby@hackclub.com', 'abby@hackclub.com', `Fresh Money: ${currentDate}`, emailMessage);
+      await sendEmail('christina@hackclub.com', 'abby@hackclub.com', `Fresh Money: ${currentDate}`, emailMessage);
+      await sendEmail('max@hackclub.com', 'abby@hackclub.com', `Fresh Money: ${currentDate}`, emailMessage);
       res.status(200).send("it sent!!!! WOOOHOOOO");
     })
   } else {
