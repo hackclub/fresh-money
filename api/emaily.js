@@ -25,21 +25,22 @@ export default (req, res) => {
           day: 'numeric'
         }).toString()
       ));
-      var welcomeMessage = `Hi Christina! Here is your daily update! -Abby \n`
+      var welcomeMessage = `Hi Christina! Here is your daily update! -Abby \n`;
       var txs2 = txs.map(transaction => {
-        return `Transaction Name: ${transaction.memo}, Amount: $${transaction.amount_cents / 100}, Date: ${transaction.date}`
-      }).join("\n")
+        return `Transaction Name: ${transaction.memo}, Amount: $${transaction.amount_cents / 100}, Date: ${transaction.date}`;
+      }).join("\n");
 
-      var emailMessage = welcomeMessage + txs2;
       var currentDate = new Date().toLocaleDateString('en-us', {
         year: 'numeric',
         month: 'long',
         day: 'numeric'
       }).toString();
 
-      await sendEmail('abby@hackclub.com', 'abby@hackclub.com', `Fresh Money: ${currentDate}`, emailMessage);
-      await sendEmail('christina@hackclub.com', 'abby@hackclub.com', `Fresh Money: ${currentDate}`, emailMessage);
-      await sendEmail('max@hackclub.com', 'abby@hackclub.com', `Fresh Money: ${currentDate}`, emailMessage);
+      var subject = getSubjectForDay(currentDate);
+
+      await sendEmail('abby@hackclub.com', 'abby@hackclub.com', subject, welcomeMessage + txs2);
+      await sendEmail('christina@hackclub.com', 'abby@hackclub.com', subject, welcomeMessage + txs2);
+      await sendEmail('max@hackclub.com', 'abby@hackclub.com', subject, welcomeMessage + txs2);
       res.status(200).send("it sent!!!! WOOOHOOOO");
     })
   } else {
@@ -64,4 +65,30 @@ function sendEmail(to, from, subject, text) {
       resolve(body);
     });
   })
+}
+
+function getSubjectForDay(date) {
+  const day = new Date(date).getDay();
+  const month = new Date(date).toLocaleDateString('en-us', {
+    month: 'long'
+  }).toString();
+  const dayOfMonth = new Date(date).getDate();
+
+  switch (day) {
+    case 0: // Sunday
+    case 6: // Saturday
+      return `No work day but the $ is moving - ${getFormattedDate(dayOfMonth, month)}`;
+    case 1: // Monday
+      return `Cha-Ching! Money Madness: ${getFormattedDate(dayOfMonth, month)}`;
+    case 2: // Tuesday
+      return `Treasure Tuesday ${getFormattedDate(dayOfMonth, month)} Trove Alert`;
+    case 3: // Wednesday
+      return `${getFormattedDate(dayOfMonth, month)} Bank Update`;
+    default: // Thursday and Friday
+      return `${getFormattedDate(dayOfMonth, month)} Fresh Money`;
+  }
+}
+
+function getFormattedDate(day, month) {
+  return `${month} ${day}`;
 }
