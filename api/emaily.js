@@ -84,8 +84,10 @@ function getSubjectForDay(date) {
       return `Treasure Tuesday ${getFormattedDate(dayOfMonth, month)} Trove Alert`;
     case 3: // Wednesday
       return `${getFormattedDate(dayOfMonth, month)} Bank Update`;
+    case 5: // Friday
+        return `Fri-Yay Finances: ${getFormattedDate(dayOfMonth, month)}`;
     default: // Thursday and Friday
-      return `${getFormattedDate(dayOfMonth, month)} Fresh Money`;
+      return `${getFormattedDate(dayOfMonth, month)}`;
   }
 }
 
