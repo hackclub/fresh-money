@@ -25,9 +25,15 @@ export default (req, res) => {
           day: '2-digit'
       }).replace(/(\d+)\/(\d+)\/(\d+)/, '$3-$1-$2').toString()
       ));
-      var welcomeMessage = `Hi Christina! Here is your daily update! -Abby \n`;
+      var welcomeMessage = `Hi!! Here is your daily update: <br />`;
+      var endingMessage = `Best, Abby`;
       var txs2 = txs.map(transaction => {
-        return `Transaction Name: ${transaction.memo}, Amount: $${transaction.amount_cents / 100}, Date: ${transaction.date}`;
+        return `
+          <tr style="background-color: ${transaction.amount_cents > 0 ? "rgba(51,214,166,0.125)" : "rgba(236,55,80,0.125)"}; color: black; border-bottom: 1px solid rgba(0,0,0,0.0625)">
+            <td style="padding: 3px 10px;">${transaction.memo}</td>
+            <td style="padding: 3px 10px;">${(transaction.amount_cents / 100).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}</td>
+          </tr>
+        `;
       }).join("\n");
 
       var currentDate = new Date().toLocaleDateString('en-us', {
@@ -38,11 +44,13 @@ export default (req, res) => {
 
       var subject = getSubjectForDay(currentDate);
 
-      console.log(txs2)
+      var html = `${welcomeMessage}<br /><table style="border-collapse: collapse;">
+      <tr style="text-align: left;">
+        <th style="padding: 3px 0px;">Description</th>
+        <th style="padding: 3px 0px;">Amount</th>
+      </tr>${txs2}</table><br />${endingMessage}`;
 
-      await sendEmail('abby@hackclub.com', 'abby@hackclub.com', subject, welcomeMessage + txs2);
-      // await sendEmail('christina@hackclub.com', 'abby@hackclub.com', subject, welcomeMessage + txs2);
-      // await sendEmail('max@hackclub.com', 'abby@hackclub.com', subject, welcomeMessage + txs2);
+      await sendEmail('abby@hackclub.com', 'abby@hackclub.com', subject, html);
       res.status(200).send("it sent!!!! WOOOHOOOO");
     })
   } else {
@@ -50,12 +58,12 @@ export default (req, res) => {
   }
 }
 
-function sendEmail(to, from, subject, text) {
+function sendEmail(to, from, subject, html) {
   const data = {
     from: from,
     to: to,
     subject: subject,
-    text: text
+    html: html
   };
 
   return new Promise((resolve, reject) => {
