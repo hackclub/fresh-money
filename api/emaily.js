@@ -21,9 +21,9 @@ export default (req, res) => {
         tx.date ===
         (new Date(req.query.date)).toLocaleString('en-us', {
           year: 'numeric',
-          month: 'long',
-          day: 'numeric'
-        }).toString()
+          month: '2-digit',
+          day: '2-digit'
+      }).replace(/(\d+)\/(\d+)\/(\d+)/, '$3-$1-$2').toString()
       ));
       var welcomeMessage = `Hi Christina! Here is your daily update! -Abby \n`;
       var txs2 = txs.map(transaction => {
@@ -38,9 +38,11 @@ export default (req, res) => {
 
       var subject = getSubjectForDay(currentDate);
 
+      console.log(txs2)
+
       await sendEmail('abby@hackclub.com', 'abby@hackclub.com', subject, welcomeMessage + txs2);
-      await sendEmail('christina@hackclub.com', 'abby@hackclub.com', subject, welcomeMessage + txs2);
-      await sendEmail('max@hackclub.com', 'abby@hackclub.com', subject, welcomeMessage + txs2);
+      // await sendEmail('christina@hackclub.com', 'abby@hackclub.com', subject, welcomeMessage + txs2);
+      // await sendEmail('max@hackclub.com', 'abby@hackclub.com', subject, welcomeMessage + txs2);
       res.status(200).send("it sent!!!! WOOOHOOOO");
     })
   } else {
@@ -76,8 +78,9 @@ function getSubjectForDay(date) {
 
   switch (day) {
     case 0: // Sunday
+      return `Sunday funday money day- ${getFormattedDate(dayOfMonth, month)}`;
     case 6: // Saturday
-      return `No work day but the $ is moving - ${getFormattedDate(dayOfMonth, month)}`;
+      return `Not a work day but the $ is moving - ${getFormattedDate(dayOfMonth, month)}`;
     case 1: // Monday
       return `Cha-Ching! Money Madness: ${getFormattedDate(dayOfMonth, month)}`;
     case 2: // Tuesday
