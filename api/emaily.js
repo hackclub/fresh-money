@@ -51,6 +51,9 @@ export default (req, res) => {
       </tr>${txs2}</table><br />${endingMessage}`;
 
       await sendEmail('abby@hackclub.com', 'abby@hackclub.com', subject, html);
+      await sendEmail('max@hackclub.com', 'abby@hackclub.com', subject, html);
+      await sendEmail('christina@hackclub.com', 'abby@hackclub.com', subject, html);
+
       res.status(200).send("it sent!!!! WOOOHOOOO");
     })
   } else {
