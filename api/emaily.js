@@ -1,6 +1,6 @@
-import fetch from 'node-fetch';
+import fetch from 'node-fetch'
+import mailgun from 'mailgun-js'
 
-const mailgun = require("mailgun-js");
 const mg = mailgun({
   apiKey: process.env.API_KEY,
   domain: 'hackclub.com'
