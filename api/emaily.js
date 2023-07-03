@@ -6,6 +6,14 @@ const mg = mailgun({
   domain: 'hackclub.com'
 });
 
+// TODO: Split into .JSON file and parsed
+const emails = [
+  "abby@hackclub.com",
+  "max@hackclub.com",
+  "christina@hackclub.com",
+  "sam@hackclub.com"
+]
+
 export default (req, res) => {
   if (req.query.date) {
     fetch('https://bank.hackclub.com/api/v3/organizations/hq/transactions')
@@ -50,10 +58,11 @@ export default (req, res) => {
         <th style="padding: 3px 0px;">Amount</th>
       </tr>${txs2}</table><br />${endingMessage}`;
 
-        await sendEmail('abby@hackclub.com', 'abby@hackclub.com', subject, html);
-        await sendEmail('max@hackclub.com', 'abby@hackclub.com', subject, html);
-        await sendEmail('christina@hackclub.com', 'abby@hackclub.com', subject, html);
-        await sendEmail('sam@hackclub.com', 'abby@hackclub.com', subject, html);
+        const emailPromises = emails.map((address) => sendEmail(address, 'abby@hackclub.com', subject, html))
+
+        const sent = await Promise.allSettled(emailPromises)
+
+        sent.ForEach((val,i) => val == "rejected" ? console.error(`Unable to send digest to ${emails[i]}`) : continue)
 
         res.status(200).send("it sent!!!! WOOOHOOOO");
       })
