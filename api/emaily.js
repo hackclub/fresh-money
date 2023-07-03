@@ -62,7 +62,7 @@ export default (req, res) => {
 
         const sent = await Promise.allSettled(emailPromises)
 
-        sent.ForEach((val,i) => val.status == "rejected" ? console.error(`Unable to send digest to ${emails[i]}`) : continue)
+        sent.forEach((val,i) => val.status == "rejected" ? console.error(`Unable to send digest to ${emails[i]}`) : null)
 
         res.status(200).send("it sent!!!! WOOOHOOOO");
       })
@@ -87,9 +87,10 @@ function sendEmail(to, from, subject, html) {
     mg.messages().send(data, (error, body) => {
       if (error) {
         reject(error);
+      } else {
+        console.log("sent!");
+        resolve(body);
       }
-      console.log("sent!");
-      resolve(body);
     });
   });
 }
