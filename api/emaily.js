@@ -54,6 +54,7 @@ export default (req, res) => {
         await sendEmail('max@hackclub.com', 'abby@hackclub.com', subject, html);
         await sendEmail('christina@hackclub.com', 'abby@hackclub.com', subject, html);
         await sendEmail('sam@hackclub.com', 'abby@hackclub.com', subject, html);
+        await sendEmail('peter@saishack.club', 'abby@hackclub.com', subject, html);
 
         res.status(200).send("it sent!!!! WOOOHOOOO");
       })
