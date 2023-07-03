@@ -62,7 +62,7 @@ export default (req, res) => {
 
         const sent = await Promise.allSettled(emailPromises)
 
-        sent.ForEach((val,i) => val == "rejected" ? console.error(`Unable to send digest to ${emails[i]}`) : continue)
+        sent.ForEach((val,i) => val.status == "rejected" ? console.error(`Unable to send digest to ${emails[i]}`) : continue)
 
         res.status(200).send("it sent!!!! WOOOHOOOO");
       })
