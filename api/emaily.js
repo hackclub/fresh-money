@@ -6,6 +6,16 @@ const mg = mailgun({
   domain: 'hackclub.com'
 });
 
+// TODO: Split into .JSON file and parsed
+const emails = [
+  "abby@hackclub.com",
+  "max@hackclub.com",
+  "christina@hackclub.com",
+  "sam@hackclub.com",
+  "peter@saishack.club",
+  "sahiti@hackclub.com"
+]
+
 export default (req, res) => {
   if (req.query.date) {
     fetch('https://bank.hackclub.com/api/v3/organizations/hq/transactions')
@@ -50,12 +60,11 @@ export default (req, res) => {
         <th style="padding: 3px 0px;">Amount</th>
       </tr>${txs2}</table><br />${endingMessage}`;
 
-        await sendEmail('abby@hackclub.com', 'abby@hackclub.com', subject, html);
-        await sendEmail('max@hackclub.com', 'abby@hackclub.com', subject, html);
-        await sendEmail('christina@hackclub.com', 'abby@hackclub.com', subject, html);
-        await sendEmail('sam@hackclub.com', 'abby@hackclub.com', subject, html);
-        await sendEmail('peter@saishack.club', 'abby@hackclub.com', subject, html);
-        await sendEmail('sahiti@hackclub.com', 'abby@hackclub.com', subject, html);
+        const emailPromises = emails.map((address) => sendEmail(address, 'abby@hackclub.com', subject, html))
+
+        const sent = await Promise.allSettled(emailPromises)
+
+        sent.forEach((val,i) => val.status == "rejected" ? console.error(`Unable to send digest to ${emails[i]}`) : null)
 
         res.status(200).send("it sent!!!! WOOOHOOOO");
       })
@@ -80,9 +89,10 @@ function sendEmail(to, from, subject, html) {
     mg.messages().send(data, (error, body) => {
       if (error) {
         reject(error);
+      } else {
+        console.log("sent!");
+        resolve(body);
       }
-      console.log("sent!");
-      resolve(body);
     });
   });
 }
