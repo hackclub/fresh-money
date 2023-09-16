@@ -2,7 +2,7 @@
 
 ## Overview
 
-Fresh Money is a daily email service that provides a summary of transactions occurring on the Hack Club bank. This project was launched last summer by  @abbyfischler as a part of her internship, to help promote Hack Club's dedication to financial transparency more. The Fresh Money email updates how money moves on [Hack Club Bank](https://bank.hackclub.com/). you can stay updated on how the money moves within Hack Club.
+Fresh Money is a daily email service that provides a summary of transactions occurring on [HCB](https://hcb.hackclub.com/hq). This project was launched last summer by  @abbyfischler as a part of her internship, to help promote Hack Club's dedication to financial transparency more. The Fresh Money email updates how money moves on [HCB](https://bank.hackclub.com/). you can stay updated on how the money moves within Hack Club.
 
 ## Want to recieve the email?
 To start receiving the daily emails, follow the steps below:
