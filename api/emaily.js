@@ -15,7 +15,8 @@ const emails = [
   "peter@saishack.club",
   "sahiti@hackclub.com",
   "arav@hackclub.com",
-  "xkrishguptaa@gmail.com"
+  "xkrishguptaa@gmail.com",
+  "cheru@hackclub.com"
 ]
 
 export default (req, res) => {
