@@ -11,6 +11,7 @@ const emails = [
   "christina@hackclub.com",
   "cody@hackclub.com",
   "zach@hackclub.com",
+  "hackclub-leeks-aaaak5xlf3x2gnrkutysmrdp4a@hackclub.slack.com"
 ]
 
 export default (req, res) => {
